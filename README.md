@@ -1,40 +1,92 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+## 📎 Hiked.in | Link Sharing App
 
-## Getting Started
+A pixel-perfect, responsive, and interactive link sharing application built using **Next.js (Pages Router)**, **JSX**, and **CSS Modules**.
+This app mimics the UI from the provided Figma and includes CRUD functionality, drag-and-drop sorting, form validation, and mobile preview features.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 🚀 Live Demo
+
+👉 [Live Demo Link](https://your-app-url.netlify.app)
+👉 [Video Walkthrough](https://your-video-link.com)
+
+---
+
+### 📂 Folder Structure
+
+```
+hiked-link-sharing-app/
+├── public/                 # Static assets (icons, images)
+├── pages/
+│   ├── index.js            # Mobile preview screen
+│   ├── dashboard.js        # Dashboard for managing links
+│   └── api/links.js        # (Bonus) API for storing link data
+├── components/
+│   ├── Header.jsx
+│   ├── LinkForm.jsx
+│   ├── LinkCard.jsx
+│   └── PreviewPhone.jsx
+├── styles/
+│   ├── globals.css
+│   ├── Header.module.css
+│   ├── LinkForm.module.css
+│   └── LinkCard.module.css
+├── utils/
+│   └── validators.js
+└── README.md
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+### 🛠️ Technologies Used
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+* **Next.js (Pages Router)**
+* **JSX**
+* **CSS Modules**
+* **JavaScript (ES6)**
+* **React Beautiful DnD** – For drag and drop
+* **Axios** (optional, for full-stack)
+* **HTML5 & Semantic Elements**
+* **Responsive Design with Flexbox/Grid**
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### ✅ Features
 
-## Learn More
+* ✅ Add, update, delete links
+* ✅ Form validation (empty field, incorrect URL pattern)
+* ✅ Drag and drop to reorder links
+* ✅ Real-time preview inside a mobile device frame
+* ✅ Fully responsive across screen sizes
+* ✅ Accessibility: Focus rings, semantic HTML, ARIA support
+* ✅ Hover and focus states for interactive elements
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+### 🔒 Bonus Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+* ✅ Backend API for persisting links (`pages/api/links.js`)
+* ✅ User authentication (optional - using `next-auth`)
+* ✅ Extra screens and modal transitions
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 📦 Installation & Run Locally
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+```bash
+git clone https://github.com/Abhishek07788/Link-Sharing-App.git
+cd link-sharing-app
+npm install
+npm run dev
+```
+
+Visit `http://localhost:3000` to open the app.
+
+---
+
+### 🧠 Assumptions & Decisions
+
+* URL patterns are strictly validated for common platforms like GitHub, LinkedIn, YouTube, etc.
+* Drag and drop is implemented using `react-beautiful-dnd` for better UX and performance.
+* CSS Modules are used to scope styles component-wise.
+* Data persistence is added as a bonus using API routes and local state.

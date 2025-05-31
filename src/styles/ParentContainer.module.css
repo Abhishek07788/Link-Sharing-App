@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 85vh;
+  margin: 0px 24px;
+  gap: 24px;
+  overflow: scroll;
+}
+
+/* ================= Tablet styles (768px to 1024px) ================= */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    flex-direction: column-reverse;
+    justify-content: center;
+    align-items: center;
+    margin: 0px 24px;
+  }
+}
+
+/* ================= Mobile styles (up to 767px) ================= */
+@media (max-width: 767px) {
+  .container {
+    flex-direction: column-reverse;
+    margin: 0px;
+  }
+}
