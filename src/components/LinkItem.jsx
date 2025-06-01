@@ -7,6 +7,26 @@ import { PLATFORMS } from "@/utils/config";
 
 const ItemType = "LINK";
 
+const customStyles = {
+  control: (provided, state) => ({
+    ...provided,
+    borderColor: state.isFocused ? "#633CFF" : "#ccc",
+    "&:hover": {
+      borderColor: "#633CFF",
+    },
+  }),
+  indicatorSeparator: () => ({
+    display: "none", 
+  }),
+  dropdownIndicator: (provided, state) => ({
+    ...provided,
+    color: "#633CFF", 
+    "&:hover": {
+      color: "#633CFF",
+    },
+  }),
+};
+
 const LinkItem = ({
   link,
   index,
@@ -16,6 +36,7 @@ const LinkItem = ({
   links,
 }) => {
   const ref = useRef(null);
+  const dragRef = useRef(null);
 
   const [, drop] = useDrop({
     accept: ItemType,
@@ -26,7 +47,7 @@ const LinkItem = ({
     },
   });
 
-  const [{ isDragging }, drag] = useDrag({
+  const [{ isDragging }, drag, preview] = useDrag({
     type: ItemType,
     item: { index },
     collect: (monitor) => ({
@@ -34,7 +55,12 @@ const LinkItem = ({
     }),
   });
 
-  drag(drop(ref));
+  // Attach drop target to the whole container
+  drop(ref);
+  // Attach drag source only to the drag handle (icon)
+  drag(dragRef);
+  // Attach drag preview to the whole container so entire item moves
+  preview(ref);
 
   const selectedPlatform = PLATFORMS.find((p) => p.value === link.platform);
   const placeholder = selectedPlatform?.placeholder || "e.g. https://yourlink.com";
@@ -50,11 +76,14 @@ const LinkItem = ({
     <div
       className={styles.linkBlock}
       ref={ref}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
+      style={{
+        opacity: isDragging ? 0.5 : 1,
+        cursor: isDragging ? "grabbing" : "default",
+      }}
     >
       <div className={styles.linkHeader}>
         <div className={styles.linkTitle}>
-          <span className={styles.dragHandle}>
+          <span className={styles.dragHandle} ref={dragRef} style={{ cursor: "grab" }}>
             <Image
               src="/images/icon-drag-and-drop.svg"
               height={12}
@@ -81,7 +110,7 @@ const LinkItem = ({
         }
         onChange={(option) => {
           handleChange(index, "platform", option?.value);
-          handleChange(index, "url", link.url); 
+          handleChange(index, "url", link.url);
         }}
         getOptionLabel={(e) => (
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -90,7 +119,7 @@ const LinkItem = ({
           </div>
         )}
         isOptionDisabled={(option) => option.isDisabled}
-        className={styles.selectInput}
+        styles={customStyles}
       />
 
       <label>Link</label>

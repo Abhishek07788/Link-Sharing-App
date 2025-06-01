@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import LinkItem from "./LinkItem";
@@ -8,6 +8,7 @@ import { PLATFORMS } from "@/utils/config";
 export default function CustomizeForm({ setPlatforms }) {
   const [links, setLinks] = useState([]);
   const [message, setMessage] = useState("");
+  const linksContainerRef = useRef(null); 
 
   useEffect(() => {
     const storedLinks = localStorage.getItem("links");
@@ -22,15 +23,25 @@ export default function CustomizeForm({ setPlatforms }) {
       (p) => !links.some((link) => link.platform === p.value)
     );
     if (availablePlatforms.length > 0) {
-      setLinks([...links, { platform: "", url: "", error: "" }]);
+      setLinks((prevLinks) => [...prevLinks, { platform: "", url: "", error: "" }]);
     }
   };
+
+  // Scroll to bottom when links length changes
+  useEffect(() => {
+    if (linksContainerRef.current) {
+      linksContainerRef.current.scrollTo({
+        top: linksContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  }, [links.length]);
 
   const handleChange = (index, field, value) => {
     const updatedLinks = [...links];
     updatedLinks[index][field] = value;
     if (field === "url") {
-      const selectedPlatform = PLATFORMS.find(p => p.value === updatedLinks[index].platform);
+      const selectedPlatform = PLATFORMS.find((p) => p.value === updatedLinks[index].platform);
       const isValid = selectedPlatform?.validation?.test(value.trim());
       updatedLinks[index].error = isValid ? "" : `Enter a valid ${selectedPlatform.label} URL.`;
     }
@@ -41,7 +52,7 @@ export default function CustomizeForm({ setPlatforms }) {
     const updatedLinks = links.filter((_, i) => i !== index);
     setLinks(updatedLinks);
     setPlatforms(updatedLinks);
-    localStorage.setItem("links", JSON.stringify(updatedLinks)); 
+    localStorage.setItem("links", JSON.stringify(updatedLinks));
   };
 
   const moveLink = useCallback(
@@ -50,6 +61,8 @@ export default function CustomizeForm({ setPlatforms }) {
       const [moved] = updated.splice(fromIndex, 1);
       updated.splice(toIndex, 0, moved);
       setLinks(updated);
+      setPlatforms(updated);
+      localStorage.setItem("links", JSON.stringify(updated));
     },
     [links]
   );
@@ -58,7 +71,7 @@ export default function CustomizeForm({ setPlatforms }) {
     let isValidAll = true;
 
     const updatedLinks = links.map((link) => {
-      const selectedPlatform = PLATFORMS.find(p => p.value === link.platform);
+      const selectedPlatform = PLATFORMS.find((p) => p.value === link.platform);
       const isValid = selectedPlatform?.validation?.test(link.url.trim());
 
       if (!link.url || !isValid) {
@@ -81,7 +94,6 @@ export default function CustomizeForm({ setPlatforms }) {
     setTimeout(() => setMessage(""), 3000);
   };
 
-
   return (
     <DndProvider backend={HTML5Backend}>
       <div className={styles.formContainer}>
@@ -101,18 +113,20 @@ export default function CustomizeForm({ setPlatforms }) {
             )}
           </div>
           <div className={styles.subHeading}>
-            Add/edit/remove links below and then share all your profiles with
-            the world!
+            Add/edit/remove links below and then share all your profiles with the world!
           </div>
           <button
             className={styles.addButton}
             onClick={handleAddLink}
-            disabled={links.length >= PLATFORMS.length || PLATFORMS.every((p) => links.some((l) => l.platform === p.value))}
+            disabled={
+              links.length >= PLATFORMS.length ||
+              PLATFORMS.every((p) => links.some((l) => l.platform === p.value))
+            }
           >
             + Add new link
           </button>
 
-          <div className={styles.linksContainer}>
+          <div className={styles.linksContainer} ref={linksContainerRef} style={{ maxHeight: '400px', overflowY: 'auto' }}>
             {links.length === 0 ? (
               <div className={styles.emptyContainer}>
                 <img
