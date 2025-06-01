@@ -109,12 +109,15 @@ Visit `http://localhost:3000` in your browser.
 
 ## 🖼️ Screenshot
 
-![Link Sharing App Screenshot](public/images/illustration-empty.svg)
+<img width="1469" alt="Screenshot 2025-06-01 at 7 10 25 PM" src="https://github.com/user-attachments/assets/dd89d026-6031-42f3-936b-562fcc0f960f" />
+<img width="1470" alt="Screenshot 2025-06-01 at 7 10 09 PM" src="https://github.com/user-attachments/assets/579e81ff-55e3-4b8d-b6b3-2583bac20b9e" />
+
+
 
 ---
 
 ## 👨‍💻 Author
 
-* **Abhishek** – [Portfolio](https://abhishek07788.github.io/) | [GitHub](https://github.com/Abhishek07788) | [LinkedIn](http://www.linkedin.com/in/abhishekpratapsolanki)
+* **Abhishek Solanki** – [Portfolio](https://abhishek07788.github.io/) | [GitHub](https://github.com/Abhishek07788) | [LinkedIn](http://www.linkedin.com/in/abhishekpratapsolanki)
 
 ```
