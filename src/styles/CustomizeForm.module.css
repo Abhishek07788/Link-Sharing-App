@@ -17,6 +17,12 @@
 .linksContainer {
   height: 49.3vh;
   overflow: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none; 
+}
+
+.linksContainer::-webkit-scrollbar {
+  display: none;
 }
 
 .Heading {

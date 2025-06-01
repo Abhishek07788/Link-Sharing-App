@@ -6,7 +6,7 @@ export const PLATFORMS = [
     placeholder: "e.g. https://github.com/username",
     bgColor: "#000000",
     url: "#",
-    validation: /^(https?:\/\/)?(www\.)?github\.com\//,
+    validation: /^(https?:\/\/)?(www\.)?github\.com(\/.*)?\/?$/,
   },
   {
     label: "YouTube",
@@ -15,7 +15,7 @@ export const PLATFORMS = [
     placeholder: "e.g. https://youtube.com/@channel",
     bgColor: "#FF0000",
     url: "#",
-    validation: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//,
+    validation: /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)(\/.*)?\/?$/,
   },
   {
     label: "LinkedIn",
@@ -24,7 +24,7 @@ export const PLATFORMS = [
     placeholder: "e.g. https://linkedin.com/in/username",
     bgColor: "#0A66C2",
     url: "#",
-    validation: /^(https?:\/\/)?(www\.)?linkedin\.com\/in\//,
+    validation: /^(https?:\/\/)?(www\.)?linkedin\.com(\/.*)?\/?$/,
   },
   {
     label: "Facebook",
@@ -33,7 +33,7 @@ export const PLATFORMS = [
     placeholder: "e.g. https://facebook.com/username",
     bgColor: "#1877F2",
     url: "#",
-    validation: /^(https?:\/\/)?(www\.)?facebook\.com\//,
+    validation: /^(https?:\/\/)?(www\.)?facebook\.com(\/.*)?\/?$/,
   },
   {
     label: "Frontend Mentor",
@@ -42,6 +42,6 @@ export const PLATFORMS = [
     placeholder: "e.g. https://frontendmentor.io/profile/username",
     bgColor: "#F24E1E",
     url: "#",
-    validation: /^(https?:\/\/)?(www\.)?frontendmentor\.io\/profile\//,
+    validation: /^(https?:\/\/)?(www\.)?frontendmentor\.io(\/.*)?\/?$/,
   },
 ];

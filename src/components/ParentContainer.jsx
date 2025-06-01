@@ -5,11 +5,13 @@ import { useEffect, useState } from 'react';
 
 export default function ParentContainer() {
   const [platforms, setPlatforms] = useState([]);
+  const [storedLinks, setStoredLinks] = useState([])
 
   useEffect(() => {
     const storedLinks = localStorage.getItem("links");
     if (storedLinks) {
       setPlatforms(JSON.parse(storedLinks));
+      setStoredLinks(JSON.parse(storedLinks));
     }
   }, []);
 
@@ -20,7 +22,7 @@ export default function ParentContainer() {
   return (
     <div className={styles.container}>
       <PhonePreview platforms={platforms} />
-      <CustomizeForm platforms={platforms}  setPlatforms={setPlatforms}/>
+      <CustomizeForm storedLinks={storedLinks} platforms={platforms}  setPlatforms={setPlatforms}/>
     </div>
   );
 }

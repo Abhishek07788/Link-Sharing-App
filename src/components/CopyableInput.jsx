@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styles from "../styles/CustomizeForm.module.css";
 
-export function CopyableInput({ value, onChange, error }) {
+export function CopyableInput({ value, placeholder, onChange, error }) {
   const [copySuccess, setCopySuccess] = useState("");
 
   const handleCopy = () => {
@@ -17,7 +17,7 @@ export function CopyableInput({ value, onChange, error }) {
     <div className={styles.inputWrapper}>
       <input
         type="text"
-        placeholder="Enter link"
+        placeholder={placeholder ?? "Enter link"}
         value={value}
         onChange={onChange}
         className={`${error ? styles.errorTextInput  : styles.textInput}`}

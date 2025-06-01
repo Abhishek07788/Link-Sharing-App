@@ -38,9 +38,8 @@ export default function PhonePreview({ platforms }) {
                 />
                 <span>{platform.label}</span>
               </div>
-
               <a
-                href={link.url}
+                href={link.url.startsWith("http") ? link.url : `https://${link.url}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
