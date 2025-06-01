@@ -15,7 +15,6 @@ const customStyles = {
     "&:hover": {
       borderColor: "#633CFF",
     },
-    boxShadow: state.isFocused ? "0 0 0 1px #633CFF" : "none",
   }),
   indicatorSeparator: () => ({
     display: "none",
@@ -114,12 +113,11 @@ const LinkItem = ({
       </div>
 
       <label>Platform</label>
-        <Select
+      <Select
         options={platformOptions}
         value={link.platform ? {label: selectedPlatform.label, value: selectedPlatform.value, icon: selectedPlatform.icon} : null}
         onChange={(option) => {
             handleChange(index, "platform", option?.value);
-            handleChange(index, "url", link.url);
         }}
         getOptionLabel={(e) => (
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -131,9 +129,13 @@ const LinkItem = ({
         styles={{
             ...customStyles,
             menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+            control: (provided, state) => ({
+              ...provided,
+              boxShadow: state.isFocused ? "0 0 0 1px #633CFF" : (link.error && !link?.platform) ? "0 0 0 1px red" : "none",
+          }),
         }}
         menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
-        />
+      />
       <label>Link</label>
       <CopyableInput
         placeholder={placeholder}
