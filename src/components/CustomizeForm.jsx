@@ -1,92 +1,160 @@
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import LinkItem from "./LinkItem";
 import styles from "../styles/CustomizeForm.module.css";
+import { PLATFORMS } from "@/utils/config";
 
-const platforms = [
-  { label: "GitHub", value: "github", icon: "/images/icon-github.svg" },
-  { label: "YouTube", value: "youtube", icon: "/images/icon-youtube.svg" },
-  { label: "LinkedIn", value: "linkedin", icon: "/images/icon-linkedin.svg" },
-];
-
-export default function CustomizeForm() {
+export default function CustomizeForm({ setPlatforms }) {
   const [links, setLinks] = useState([]);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    const storedLinks = localStorage.getItem("links");
+    if (storedLinks) {
+      setLinks(JSON.parse(storedLinks));
+      setPlatforms(JSON.parse(storedLinks));
+    }
+  }, []);
+
   const handleAddLink = () => {
-    setLinks([...links, { platform: "", url: "" }]);
+    const availablePlatforms = PLATFORMS.filter(
+      (p) => !links.some((link) => link.platform === p.value)
+    );
+    if (availablePlatforms.length > 0) {
+      setLinks([...links, { platform: "", url: "", error: "" }]);
+    }
   };
 
   const handleChange = (index, field, value) => {
-    const newLinks = [...links];
-    newLinks[index][field] = value;
-    setLinks(newLinks);
+    const updatedLinks = [...links];
+    updatedLinks[index][field] = value;
+    if (field === "url") {
+      const selectedPlatform = PLATFORMS.find(p => p.value === updatedLinks[index].platform);
+      const isValid = selectedPlatform?.validation?.test(value.trim());
+      updatedLinks[index].error = isValid ? "" : `Enter a valid ${selectedPlatform.label} URL.`;
+    }
+    setLinks(updatedLinks);
   };
 
   const handleRemove = (index) => {
-    const newLinks = links.filter((_, i) => i !== index);
-    setLinks(newLinks);
+    const updatedLinks = links.filter((_, i) => i !== index);
+    setLinks(updatedLinks);
+    setPlatforms(updatedLinks);
+    localStorage.setItem("links", JSON.stringify(updatedLinks)); 
   };
 
+  const moveLink = useCallback(
+    (fromIndex, toIndex) => {
+      const updated = [...links];
+      const [moved] = updated.splice(fromIndex, 1);
+      updated.splice(toIndex, 0, moved);
+      setLinks(updated);
+    },
+    [links]
+  );
+
+  const handleSave = () => {
+    let isValidAll = true;
+
+    const updatedLinks = links.map((link) => {
+      const selectedPlatform = PLATFORMS.find(p => p.value === link.platform);
+      const isValid = selectedPlatform?.validation?.test(link.url.trim());
+
+      if (!link.url || !isValid) {
+        isValidAll = false;
+        return { ...link, error: `Enter a valid ${selectedPlatform.label} URL.` };
+      }
+      return { ...link, error: "" };
+    });
+
+    setLinks(updatedLinks);
+
+    if (isValidAll) {
+      localStorage.setItem("links", JSON.stringify(updatedLinks));
+      setPlatforms(updatedLinks);
+      setMessage("Links saved successfully!");
+    } else {
+      setMessage("Please correct the errors before saving.");
+    }
+
+    setTimeout(() => setMessage(""), 3000);
+  };
+
+
   return (
-    <div className={styles.formContainer}>
-      <h2>Customize your links</h2>
-      <p>
-        Add/edit/remove links below and then share all your profiles with the
-        world!
-      </p>
-      {links.length === 0 ? (
-        <div className={styles.emptyContainer}>
-          <img
-            src="/images/illustration-empty.svg"
-            alt="Empty state illustration"
-            className={styles.emptyImage}
-          />
-          <p className={styles.emptyText}>Let's get you started</p>
-          <p className={styles.emptyText}>
-            Use the "Add new link" button to get started. Once you have more
-            than one link, you can reorder and edit them. We're here to help you
-            share your profiles with everyone!
-          </p>
-          <button className={styles.addButton} onClick={handleAddLink}>
+    <DndProvider backend={HTML5Backend}>
+      <div className={styles.formContainer}>
+        <div className={styles.Container}>
+          <div className={styles.Heading}>
+            Customize your links{" "}
+            {message && (
+              <span
+                className={`${styles.message} ${
+                  message.includes("successfully")
+                    ? styles["message-success"]
+                    : styles["message-error"]
+                }`}
+              >
+                {message}
+              </span>
+            )}
+          </div>
+          <div className={styles.subHeading}>
+            Add/edit/remove links below and then share all your profiles with
+            the world!
+          </div>
+          <button
+            className={styles.addButton}
+            onClick={handleAddLink}
+            disabled={
+              links.length >= PLATFORMS.length ||
+              PLATFORMS.every((p) =>
+                links.some((l) => l.platform === p.value)
+              )
+            }
+          >
             + Add new link
+          </button>
+
+          <div className={styles.linksContainer}>
+            {links.length === 0 ? (
+              <div className={styles.emptyContainer}>
+                <img
+                  src="/images/illustration-empty.svg"
+                  alt="Empty"
+                  className={styles.emptyImage}
+                />
+                <div className={styles.emptyText}>Let's get you started</div>
+                <p className={styles.emptyText}>
+                  Use the "Add new link" button to get started. Once you have
+                  more than one link, you can reorder and edit them.
+                </p>
+              </div>
+            ) : (
+              links.map((link, index) => (
+                <LinkItem
+                  key={index}
+                  link={link}
+                  index={index}
+                  moveLink={moveLink}
+                  handleChange={handleChange}
+                  handleRemove={handleRemove}
+                  links={links}
+                />
+              ))
+            )}
+          </div>
+          <button
+            className={styles.saveButton}
+            onClick={handleSave}
+            disabled={links.length === 0}
+          >
+            Save
           </button>
         </div>
-      ) : (
-        <>
-          <button className={styles.addButton} onClick={handleAddLink}>
-            + Add new link
-          </button>
-          {links.map((link, index) => (
-            <div className={styles.linkBlock} key={index}>
-              <div className={styles.linkHeader}>
-                <span>Link #{index + 1}</span>
-                <button onClick={() => handleRemove(index)}>Remove</button>
-              </div>
-              <label>Platform</label>
-              <select
-                value={link.platform}
-                onChange={(e) =>
-                  handleChange(index, "platform", e.target.value)
-                }
-                className={styles.selectInput}
-              >
-                <option value="">Select platform</option>
-                {platforms.map((p) => (
-                  <option key={p.value} value={p.value}>
-                    {p.label}
-                  </option>
-                ))}
-              </select>
-              <label>Link</label>
-              <input
-                type="text"
-                placeholder="e.g. https://www.github.com/"
-                value={link.url}
-                onChange={(e) => handleChange(index, "url", e.target.value)}
-                className={styles.textInput}
-              />
-            </div>
-          ))}
-        </>
-      )}
-      <button className={styles.saveButton}>Save</button>
-    </div>
+        <div className={styles.divider} />
+      </div>
+    </DndProvider>
   );
 }

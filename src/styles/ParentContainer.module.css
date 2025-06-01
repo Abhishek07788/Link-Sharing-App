@@ -1,10 +1,10 @@
 .container {
   display: flex;
   flex-direction: row;
-  height: 85vh;
   margin: 0px 24px;
   gap: 24px;
-  overflow: scroll;
+  overflow: hidden;
+  justify-content: center;
 }
 
 /* ================= Tablet styles (768px to 1024px) ================= */
@@ -22,5 +22,6 @@
   .container {
     flex-direction: column-reverse;
     margin: 0px;
+    width: 100%;
   }
 }

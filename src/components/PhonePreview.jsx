@@ -1,40 +1,14 @@
-import Image from 'next/image';
-import styles from '../styles/PhonePreview.module.css';
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import styles from "../styles/PhonePreview.module.css";
+import { PLATFORMS } from "@/utils/config";
 
-const socialLinks = [
-  {
-    name: 'GitHub',
-    icon: '/images/icon-github.svg',
-    bgColor: '#000000',
-    href: '#',
-  },
-  {
-    name: 'YouTube',
-    icon: '/images/icon-youtube.svg',
-    bgColor: '#FF0000',
-    href: '#',
-  },
-  {
-    name: 'LinkedIn',
-    icon: '/images/icon-linkedin.svg',
-    bgColor: '#0A66C2',
-    href: '#',
-  },
-    {
-    name: 'Facebook',
-    icon: '/images/icon-facebook.svg',
-    bgColor: '#1877F2',
-    href: '#'
-  },
-  {
-    name: 'Frontend Mentor',
-    icon: '/images/icon-frontend-mentor.svg',
-    bgColor: '#F24E1E',
-    href: '#',
-  },
-];
+export default function PhonePreview({ platforms }) {
 
-export default function PhonePreview() {
+  const getPlatformData = (platformValue) => {
+    return PLATFORMS.find((p) => p.value === platformValue);
+  };
+
   return (
     <div className={styles.phoneContainer}>
       <Image
@@ -46,27 +20,42 @@ export default function PhonePreview() {
       />
 
       <div className={styles.linksOverlay}>
-        {socialLinks.map((link) => (
-          <a
-            key={link.name}
-            href={link.href}
-            className={styles.linkButton}
-            style={{ backgroundColor: link.bgColor }}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div className={styles.left}>
-              <Image src={link.icon} alt={link.name} width={20} height={20} />
-              <span>{link.name}</span>
+        {platforms.map((link) => {
+          const platform = getPlatformData(link.platform);
+          if (!platform) return null;
+
+          return (
+            <div
+              key={platform.value}
+              className={styles.linkButton}
+              style={{ backgroundColor: platform.bgColor }}
+            >
+              <div className={styles.left}>
+                <Image
+                  src={platform.icon}
+                  alt={platform.label}
+                  width={20}
+                  height={20}
+                />
+                <span>{platform.label}</span>
+              </div>
+
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/images/icon-arrow-right.svg"
+                  alt="arrow"
+                  width={20}
+                  height={20}
+                  className={styles.arrowIcon}
+                />
+              </a>
             </div>
-            <Image
-              src="/images/icon-arrow-right.svg"
-              alt="arrow"
-              width={20}
-              height={20}
-            />
-          </a>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

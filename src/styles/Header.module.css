@@ -80,6 +80,10 @@
     flex-shrink: 0;
 }
 
+.previewButton:hover {
+    background-color: #EFEBFF;
+}
+
 .previewIcon {
     display: block;
 }

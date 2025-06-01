@@ -1,14 +1,89 @@
 .formContainer {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  padding: 20px;
+  width: 75%;
   box-sizing: border-box;
   background: #fff;
   position: relative;
-  /* For absolute positioning of the save button */
-  min-height: 100vh;
-  /* Ensure full height */
+  padding-bottom: 50px;
+  height: 100%;
+}
+
+.Container {
+  padding: 40px;
+  padding-bottom: 0px;
+}
+
+.linksContainer {
+  height: 49.3vh;
+  overflow: auto;
+}
+
+.Heading {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333333;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.message {
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  padding: 4px 8px;
+  margin-top: 4px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.message-success,
+.message-error {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.message-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.message-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.subHeading {
+  font-size: 1rem;
+  color: #737373;
+  margin-bottom: 20px;
+  font-weight: 300;
+  margin-top: 10px;
+  margin-bottom: 40px;
+}
+
+.addButton {
+  background-color: #FFFFFF;
+  color: #633CFF;
+  border: 1px solid #633CFF;
+  border-radius: 8px;
+  padding: 11px 27px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s, color 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.addButton:hover {
+  background-color: #EFEBFF;
 }
 
 .emptyContainer {
@@ -16,54 +91,37 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
-  box-sizing: border-box;
   text-align: center;
-  flex: 1;
-  /* Take up remaining vertical space */
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 50px 20px;
 }
 
 .emptyImage {
   max-width: 100%;
   height: auto;
-  margin-bottom: 20px;
 }
 
 .emptyText {
-  font-size: 1em;
-  color: #666;
-}
-
-.formContainer h2 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
-  color: #000;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333333;
+  margin-top: 40px;
 }
 
 .formContainer p {
-  font-size: 1em;
-  color: #666;
-  margin-bottom: 20px;
+  font-size: 1rem;
+  color: #737373;
+  font-weight: 300;
+  margin-bottom: 0px;
+  margin-top: 10px;
+  width: 70%;
 }
 
-.addButton {
-  background-color: #E8E5FF;
-  color: #633CFF;
-  border: 1px solid #633CFF;
-  border-radius: 8px;
-  padding: 10px 15px;
-  margin-bottom: 20px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s, color 0.3s;
-  width: 100%;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-.addButton:hover {
-  background-color: #633CFF;
-  color: white;
+.divider {
+  height: 1px;
+  background-color: #D9D9D9;
+  margin: 20px 0;
 }
 
 .linkBlock {
@@ -72,7 +130,7 @@
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  border: 1px solid #e0e0e0;
+  background: #fafafa;
 }
 
 .linkHeader {
@@ -80,32 +138,37 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  color: #777;
-  font-size: 0.9em;
-}
-
-.linkHeader span {
-  font-weight: 500;
 }
 
 .linkHeader button {
   background: none;
   border: none;
-  color: #B3AED9;
+  color: #737373;
   cursor: pointer;
   font-size: 0.9em;
   transition: color 0.3s;
+  font-weight: 200;
 }
 
 .linkHeader button:hover {
-  color: #666;
+  color: #000;
+}
+
+.linkTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #737373;
+  font-weight: 600;
+  font-size: 1em;
 }
 
 .linkBlock label {
   display: block;
   margin-bottom: 5px;
-  color: #333;
-  font-size: 0.9em;
+  color: #333333;
+  font-size: 0.8em;
+  margin-top: 12px;
 }
 
 .selectInput,
@@ -118,7 +181,6 @@
   box-sizing: border-box;
   font-size: 1em;
   color: #555;
-  /* Remove default select arrow */
   appearance: none;
   -webkit-appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23777' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E");
@@ -128,7 +190,6 @@
 
 .textInput {
   padding-left: 30px;
-  /* Space for the icon */
   background-image: url('/images/icon-link-copied-to-clipboard.svg');
   background-position: left 10px center;
   background-repeat: no-repeat;
@@ -148,49 +209,80 @@
   border-radius: 8px;
   padding: 12px 20px;
   cursor: pointer;
-  font-size: 1.1em;
+  font-size: 1em;
   transition: background-color 0.3s;
   width: 100%;
-  box-sizing: border-box;
   text-align: center;
-  position: fixed;
-  /* Stick to the bottom */
-  bottom: 0;
-  /* Distance from the bottom */
-  left: 0;
-  right: 0;
+  position: absolute;
+  bottom: 10px;
+  right: 40px;
   margin: 0 auto;
-  max-width: 400px;
-  /* Match container width */
+  max-width: 91px;
 }
 
 .saveButton:hover {
   background-color: #5229f2;
 }
 
-/* Media query for responsiveness */
-@media (min-width: 768px) {
+.errorText {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.errorInput {
+  border-color: #ef4444;
+}
+
+.addButton:disabled {
+  background-color: #f0f0f0;
+  color: #ccc;
+  border: 1px solid #ccc;
+  cursor: not-allowed;
+}
+
+.saveButton:disabled {
+  background-color: #d7ceff;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.dragHandle {
+  cursor: grab;
+  display: inline-block;
+}
+
+
+/* ================= Tablet styles (768px to 1024px) ================= */
+@media (min-width: 768px) and (max-width: 1024px) {
   .formContainer {
-    padding: 30px;
+    width: 100%;
+    margin-top: 20px;
+    padding-bottom: 60px;
   }
 
-  .formContainer h2 {
-    font-size: 2em;
-  }
-
-  .formContainer p {
-    font-size: 1.1em;
-  }
-
-  .addButton,
   .saveButton {
-    padding: 15px 20px;
-    font-size: 1.2em;
-  }
-
-  .selectInput,
-  .textInput {
-    padding: 10px;
-    font-size: 1.1em;
+    bottom: 20px;
   }
 }
+
+/* ================= Mobile styles (up to 767px) ================= */
+@media (max-width: 767px) {
+  .formContainer {
+    width: 100%;
+    margin-top: 20px;
+    padding-bottom: 60px;
+  }
+
+  .saveButton {
+    bottom: 20px;
+  }
+
+  .linksContainer {
+    height: 450px;
+    overflow: auto;
+  }
+}
+
