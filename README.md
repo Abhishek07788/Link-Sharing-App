@@ -1,7 +1,8 @@
-````markdown
 # Link Sharing App
 
 A sleek and dynamic **link-sharing application** built using **Next.js (Pages Router)**, `react-dnd`, and `react-select`. Users can add, reorder, and customize links for different platforms (like LinkedIn, GitHub, etc.) and save them locally. 
+
+---
 
 ## ✨ Features
 
@@ -11,10 +12,10 @@ A sleek and dynamic **link-sharing application** built using **Next.js (Pages Ro
 - 🗑️ Remove links
 - 🔃 Drag-and-drop reordering (via `react-dnd`)
 - 💾 Save & persist data using `localStorage`
-- 🚫 Disables Add button when all platforms are added
+- 🚫 Add button disables when all platforms are used
 - ❌ Save button disables if no links exist
-- ✅ Visual error messages on invalid URLs
-- ✅ Dynamic icons & styling using platform config
+- ⚠️ Visual error messages for invalid URLs
+- 🎯 Dynamic icons & styling via a config object
 
 ---
 
@@ -23,9 +24,9 @@ A sleek and dynamic **link-sharing application** built using **Next.js (Pages Ro
 - **Next.js (Pages Router)**
 - **React**
 - **CSS Modules**
-- **React DnD** (for drag-and-drop)
-- **React Select** (for custom dropdowns)
-- **LocalStorage** (for persistence)
+- **React DnD**
+- **React Select**
+- **LocalStorage**
 
 ---
 
@@ -35,34 +36,33 @@ A sleek and dynamic **link-sharing application** built using **Next.js (Pages Ro
 .
 ├── public/
 │   └── images/
-│       └── All svg icons
+│       └── All SVG icons
 ├── src/
-    ├── components/
-    │   ├── CopyableInput.jsx
-    │   ├── CustomizeForm.jsx
-    │   ├── Header.jsx
-    │   ├── LinkCard.jsx
-    │   ├── LinkItem.jsx
-    │   ├── ParentContainer.jsx
-    │   └── PhonePreview.jsx
-    │
-    ├── pages/
-    │   ├── _app.js
-    │   ├── _document.js
-    │   ├── index.js
-    │   └── profile.js
-    │
-    ├── styles/
-    │   ├── CustomizeForm.module.css
-    │   ├── globals.css
-    │   ├── Header.module.css
-    │   ├── ParentContainer.module.css
-    │   └── PhonePreview.module.css
-    │
-    └── utils/
-        └── config.js
-
-````
+│   ├── components/
+│   │   ├── CopyableInput.jsx
+│   │   ├── CustomizeForm.jsx
+│   │   ├── Header.jsx
+│   │   ├── LinkCard.jsx
+│   │   ├── LinkItem.jsx
+│   │   ├── ParentContainer.jsx
+│   │   └── PhonePreview.jsx
+│   │
+│   ├── pages/
+│   │   ├── _app.js
+│   │   ├── _document.js
+│   │   ├── index.js
+│   │   └── profile.js
+│   │
+│   ├── styles/
+│   │   ├── CustomizeForm.module.css
+│   │   ├── globals.css
+│   │   ├── Header.module.css
+│   │   ├── ParentContainer.module.css
+│   │   └── PhonePreview.module.css
+│   │
+│   └── utils/
+│       └── config.js
+```
 
 ---
 
@@ -72,7 +72,7 @@ A sleek and dynamic **link-sharing application** built using **Next.js (Pages Ro
 
 ```bash
 git clone https://github.com/Abhishek07788/Link-Sharing-App.git
-cd link-sharing-app
+cd Link-Sharing-App
 ```
 
 ### 2. Install dependencies
@@ -89,35 +89,34 @@ yarn
 npm run dev
 ```
 
-Visit `http://localhost:3000` in your browser.
+Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
 ## 🧠 How It Works
 
-* Users can **add a new link** using the `+ Add new link` button.
-* Each link includes:
-
-  * A **platform dropdown** (`react-select`)
-  * A **platform-specific placeholder**
-  * **URL validation** using regex per platform
-* **Drag-and-drop** support via `react-dnd`
-* **Save** stores links to `localStorage`
-* Only **unique platforms** are allowed
+- Users can **add a new link** using the `+ Add new link` button
+- Each link includes:
+  - A **platform dropdown** (`react-select`)
+  - A **platform-specific placeholder**
+  - **Validation** using regex per platform
+- **Drag-and-drop** support using `react-dnd`
+- **Save** writes links to `localStorage`
+- Each platform can be added **only once**
 
 ---
 
-## 🖼️ Screenshot
+## 🖼️ Screenshots
 
-<img width="1469" alt="Screenshot 2025-06-01 at 7 10 25 PM" src="https://github.com/user-attachments/assets/dd89d026-6031-42f3-936b-562fcc0f960f" />
-<img width="1470" alt="Screenshot 2025-06-01 at 7 10 09 PM" src="https://github.com/user-attachments/assets/579e81ff-55e3-4b8d-b6b3-2583bac20b9e" />
+> You should host these screenshots using GitHub Issues or another image host and replace the links below with raw URLs.
 
-
+<img width="1469" alt="Screenshot 1" src="https://github.com/user-attachments/assets/dd89d026-6031-42f3-936b-562fcc0f960f" />
+<br />
+<img width="1470" alt="Screenshot 2" src="https://github.com/user-attachments/assets/579e81ff-55e3-4b8d-b6b3-2583bac20b9e" />
 
 ---
 
 ## 👨‍💻 Author
 
-* **Abhishek Solanki** – [Portfolio](https://abhishek07788.github.io/) | [GitHub](https://github.com/Abhishek07788) | [LinkedIn](http://www.linkedin.com/in/abhishekpratapsolanki)
-
-```
+**Abhishek Solanki**  
+[🌐 Portfolio](https://abhishek07788.github.io/) | [🐱 GitHub](https://github.com/Abhishek07788) | [💼 LinkedIn](http://www.linkedin.com/in/abhishekpratapsolanki)
