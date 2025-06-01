@@ -152,7 +152,6 @@ export default function CustomizeForm({ storedLinks, setStoredLinks }) {
           <div
             className={styles.linksContainer}
             ref={linksContainerRef}
-            style={{ maxHeight: "400px", overflowY: "auto" }}
           >
             {links.length === 0 ? (
               <div className={styles.emptyContainer}>

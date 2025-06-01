@@ -4,17 +4,18 @@ import CustomizeForm from './CustomizeForm';
 import { useEffect, useState } from 'react';
 
 export default function ParentContainer() {
-  const [storedLinks, setStoredLinks] = useState([]);
-
-  useEffect(() => {
-    const storedLink = localStorage.getItem("links");
-    if (storedLink) {
-      setStoredLinks(JSON.parse(storedLink));
+  const [storedLinks, setStoredLinks] = useState(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem("links");
+      return saved ? JSON.parse(saved) : [];
     }
-  }, []);
+    return [];
+  });
 
   useEffect(() => {
-    localStorage.setItem("links", JSON.stringify(storedLinks));
+    if (storedLinks?.length >= 0) {
+      localStorage.setItem("links", JSON.stringify(storedLinks));
+    }
   }, [storedLinks]);
 
   return (
