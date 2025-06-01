@@ -1,0 +1,71 @@
+.phoneContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  padding: 24px;
+  width: 50%;
+}
+
+.mockup {
+  object-fit: contain;
+  z-index: 1;
+}
+
+.linksOverlay {
+  position: absolute;
+  top: 44.6%;
+  left: 49.9%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 17.2px;
+  width: 240px;
+  z-index: 2;
+}
+
+.linkButton {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Force icons to appear white even if SVG is black */
+.left img {
+  filter: brightness(0) invert(1);
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .phoneContainer {
+    width: 100%;
+    background: #fff;
+    margin: auto;
+    padding: 24px 0px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .phoneContainer {
+    width: 100%;
+    background: #fff;
+    margin: auto;
+    padding: 24px 0px;
+  }
+}
+
+.arrowIcon {
+  cursor: pointer;
+}
