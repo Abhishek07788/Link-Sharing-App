@@ -8,9 +8,8 @@ const Header = () => {
   const route = useRouter();
 
   useEffect(() => {
-    // Determine the active tab based on the current route
     const path = route.pathname;
-    if (path.includes("links")) {
+    if (path === "/") {
       setActiveTab("links");
     } else if (path.includes("profile")) {
       setActiveTab("profile");
@@ -41,7 +40,7 @@ const Header = () => {
           className={`${styles.navButton} ${
             activeTab === "links" ? styles.activeNav : styles.inactiveNav
           }`}
-          onClick={() => {setActiveTab("links"); route.push("/links")}}
+          onClick={() => {setActiveTab("links"); route.push("/")}}
         >
           <Image
             src="/images/icon-links-header.svg"

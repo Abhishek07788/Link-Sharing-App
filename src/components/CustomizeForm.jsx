@@ -107,12 +107,7 @@ export default function CustomizeForm({ setPlatforms }) {
           <button
             className={styles.addButton}
             onClick={handleAddLink}
-            disabled={
-              links.length >= PLATFORMS.length ||
-              PLATFORMS.every((p) =>
-                links.some((l) => l.platform === p.value)
-              )
-            }
+            disabled={links.length >= PLATFORMS.length || PLATFORMS.every((p) => links.some((l) => l.platform === p.value))}
           >
             + Add new link
           </button>
