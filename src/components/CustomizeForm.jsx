@@ -5,13 +5,13 @@ import LinkItem from "./LinkItem";
 import styles from "../styles/CustomizeForm.module.css";
 import { PLATFORMS } from "@/utils/config";
 
-export default function CustomizeForm({ platforms, setPlatforms }) {
+export default function CustomizeForm({ storedLinks, setStoredLinks }) {
   const [links, setLinks] = useState([]);
   const [message, setMessage] = useState("");
   const linksContainerRef = useRef(null);
   const [hasChanges, setHasChanges] = useState(false);
   
-  // Deep compare links and storedLinks
+  // compare links and storedLinks
   useEffect(() => {
     const areLinksEqual = (a, b) => {
       if (!a || !b) return false;
@@ -20,15 +20,15 @@ export default function CustomizeForm({ platforms, setPlatforms }) {
         return link.platform === b[i].platform && link.url.trim() === b[i].url.trim() && (!link.error === !b[i].error); 
       });
     };
-    setHasChanges(!areLinksEqual(links, platforms));
-  }, [links, platforms]);
+    setHasChanges(!areLinksEqual(links, storedLinks));
+  }, [links, storedLinks]);
 
-  // Initialize links from platforms prop
+  // Initialize links from storedLinks prop
   useEffect(() => {
-    if (platforms?.length > 0) {
-      setLinks(platforms);
+    if (storedLinks?.length > 0) {
+      setLinks(storedLinks);
     }
-  }, [platforms]);
+  }, [storedLinks]);
 
   // Scroll to bottom when links length changes
   useEffect(() => {
@@ -63,7 +63,7 @@ export default function CustomizeForm({ platforms, setPlatforms }) {
       const [moved] = updated.splice(fromIndex, 1);
       updated.splice(toIndex, 0, moved);
       setLinks(updated);
-      setPlatforms(updated);
+      setStoredLinks(updated);
     },
     [links]
   );
@@ -85,7 +85,7 @@ export default function CustomizeForm({ platforms, setPlatforms }) {
   const handleRemove = (index) => {
     const updatedLinks = links.filter((_, i) => i !== index);
     setLinks(updatedLinks);
-    setPlatforms(updatedLinks);
+    setStoredLinks(updatedLinks);
   };
 
   // Handle saving links
@@ -108,7 +108,7 @@ export default function CustomizeForm({ platforms, setPlatforms }) {
     setLinks(updatedLinks);
 
     if (isValidAll) {
-      setPlatforms(updatedLinks);
+      setStoredLinks(updatedLinks);
       setMessage("Links saved successfully!");
     } else {
       setMessage("Please correct the errors before saving.");
@@ -184,7 +184,6 @@ export default function CustomizeForm({ platforms, setPlatforms }) {
           <button
             className={styles.saveButton}
             onClick={handleSave}
-            onKeyDown={(e) => e.key === 'Enter' && handleSave()}
             disabled={!hasChanges || links.length === 0}
           >
             Save

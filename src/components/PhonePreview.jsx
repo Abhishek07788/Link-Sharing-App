@@ -2,7 +2,7 @@ import Image from "next/image";
 import styles from "../styles/PhonePreview.module.css";
 import { PLATFORMS } from "@/utils/config";
 
-export default function PhonePreview({ platforms }) {
+export default function PhonePreview({ storedLinks }) {
 
   const getPlatformData = (platformValue) => {
     return PLATFORMS.find((p) => p.value === platformValue);
@@ -19,7 +19,7 @@ export default function PhonePreview({ platforms }) {
       />
 
       <div className={styles.linksOverlay}>
-        {platforms.map((link) => {
+        {storedLinks.map((link) => {
           const platform = getPlatformData(link.platform);
           if (!platform) return null;
 
