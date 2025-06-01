@@ -5,27 +5,17 @@ import LinkItem from "./LinkItem";
 import styles from "../styles/CustomizeForm.module.css";
 import { PLATFORMS } from "@/utils/config";
 
-export default function CustomizeForm({ setPlatforms }) {
+export default function CustomizeForm({platforms, setPlatforms }) {
   const [links, setLinks] = useState([]);
   const [message, setMessage] = useState("");
-  const linksContainerRef = useRef(null); 
+  const linksContainerRef = useRef(null);
 
+  // Initialize links from platforms prop
   useEffect(() => {
-    const storedLinks = localStorage.getItem("links");
-    if (storedLinks) {
-      setLinks(JSON.parse(storedLinks));
-      setPlatforms(JSON.parse(storedLinks));
+    if (platforms?.length > 0) {
+      setLinks(platforms);
     }
-  }, []);
-
-  const handleAddLink = () => {
-    const availablePlatforms = PLATFORMS.filter(
-      (p) => !links.some((link) => link.platform === p.value)
-    );
-    if (availablePlatforms.length > 0) {
-      setLinks((prevLinks) => [...prevLinks, { platform: "", url: "", error: "" }]);
-    }
-  };
+  }, [platforms]);
 
   // Scroll to bottom when links length changes
   useEffect(() => {
@@ -37,24 +27,15 @@ export default function CustomizeForm({ setPlatforms }) {
     }
   }, [links.length]);
 
+  // Handle changes to links
   const handleChange = (index, field, value) => {
     const updatedLinks = [...links];
     updatedLinks[index][field] = value;
-    if (field === "url") {
-      const selectedPlatform = PLATFORMS.find((p) => p.value === updatedLinks[index].platform);
-      const isValid = selectedPlatform?.validation?.test(value.trim());
-      updatedLinks[index].error = isValid ? "" : `Enter a valid ${selectedPlatform.label} URL.`;
-    }
+    updatedLinks[index].error = "";
     setLinks(updatedLinks);
   };
 
-  const handleRemove = (index) => {
-    const updatedLinks = links.filter((_, i) => i !== index);
-    setLinks(updatedLinks);
-    setPlatforms(updatedLinks);
-    localStorage.setItem("links", JSON.stringify(updatedLinks));
-  };
-
+  // Move link within the list
   const moveLink = useCallback(
     (fromIndex, toIndex) => {
       const updated = [...links];
@@ -62,11 +43,31 @@ export default function CustomizeForm({ setPlatforms }) {
       updated.splice(toIndex, 0, moved);
       setLinks(updated);
       setPlatforms(updated);
-      localStorage.setItem("links", JSON.stringify(updated));
     },
     [links]
   );
 
+  // Handle adding a new link
+  const handleAddLink = () => {
+    const availablePlatforms = PLATFORMS.filter(
+      (p) => !links.some((link) => link.platform === p.value)
+    );
+    if (availablePlatforms.length > 0) {
+      setLinks((prevLinks) => [
+        ...prevLinks,
+        { platform: "", url: "", error: "" },
+      ]);
+    }
+  };
+
+  // Handle removing a link
+  const handleRemove = (index) => {
+    const updatedLinks = links.filter((_, i) => i !== index);
+    setLinks(updatedLinks);
+    setPlatforms(updatedLinks);
+  };
+
+  // Handle saving links
   const handleSave = () => {
     let isValidAll = true;
 
@@ -76,7 +77,10 @@ export default function CustomizeForm({ setPlatforms }) {
 
       if (!link.url || !isValid) {
         isValidAll = false;
-        return { ...link, error: `Enter a valid ${selectedPlatform.label} URL.` };
+        return {
+          ...link,
+          error: `Enter a valid ${selectedPlatform?.label ?? ""} URL.`,
+        };
       }
       return { ...link, error: "" };
     });
@@ -84,7 +88,6 @@ export default function CustomizeForm({ setPlatforms }) {
     setLinks(updatedLinks);
 
     if (isValidAll) {
-      localStorage.setItem("links", JSON.stringify(updatedLinks));
       setPlatforms(updatedLinks);
       setMessage("Links saved successfully!");
     } else {
@@ -113,7 +116,8 @@ export default function CustomizeForm({ setPlatforms }) {
             )}
           </div>
           <div className={styles.subHeading}>
-            Add/edit/remove links below and then share all your profiles with the world!
+            Add/edit/remove links below and then share all your profiles with
+            the world!
           </div>
           <button
             className={styles.addButton}
@@ -126,7 +130,11 @@ export default function CustomizeForm({ setPlatforms }) {
             + Add new link
           </button>
 
-          <div className={styles.linksContainer} ref={linksContainerRef} style={{ maxHeight: '400px', overflowY: 'auto' }}>
+          <div
+            className={styles.linksContainer}
+            ref={linksContainerRef}
+            style={{ maxHeight: "400px", overflowY: "auto" }}
+          >
             {links.length === 0 ? (
               <div className={styles.emptyContainer}>
                 <img

@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../styles/CustomizeForm.module.css";
 import { useRef } from "react";
 import { PLATFORMS } from "@/utils/config";
+import { CopyableInput } from "./CopyableInput";
 
 const ItemType = "LINK";
 
@@ -14,16 +15,32 @@ const customStyles = {
     "&:hover": {
       borderColor: "#633CFF",
     },
+    boxShadow: state.isFocused ? "0 0 0 1px #633CFF" : "none",
   }),
   indicatorSeparator: () => ({
-    display: "none", 
+    display: "none",
   }),
   dropdownIndicator: (provided, state) => ({
     ...provided,
-    color: "#633CFF", 
+    color: "#633CFF",
     "&:hover": {
       color: "#633CFF",
     },
+  }),
+    option: (provided, state) => ({
+    ...provided,
+    backgroundColor: state.isSelected ? "#d7ceff" : "transparent",
+    color: state.isDisabled ? "#aaa" : state.isSelected || state.isFocused ? "#633CFF" : "#000",
+    cursor: state.isDisabled ? "not-allowed" : "pointer",
+    ":hover": {
+        backgroundColor:
+        state.isDisabled ? "transparent" : state.isSelected ? "#d7ceff" : "transparent",
+        color: state.isDisabled ? "#aaa" : "#633CFF",
+    },
+    }),
+    menu: (provided) => ({
+    ...provided,
+    zIndex: 9999,
   }),
 };
 
@@ -97,39 +114,33 @@ const LinkItem = ({
       </div>
 
       <label>Platform</label>
-      <Select
+        <Select
         options={platformOptions}
-        value={
-          link.platform
-            ? {
-                label: selectedPlatform.label,
-                value: selectedPlatform.value,
-                icon: selectedPlatform.icon,
-              }
-            : null
-        }
+        value={link.platform ? {label: selectedPlatform.label, value: selectedPlatform.value, icon: selectedPlatform.icon} : null}
         onChange={(option) => {
-          handleChange(index, "platform", option?.value);
-          handleChange(index, "url", link.url);
+            handleChange(index, "platform", option?.value);
+            handleChange(index, "url", link.url);
         }}
         getOptionLabel={(e) => (
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <Image src={e.icon} width={20} height={20} alt={e.label} />
             {e.label}
-          </div>
+            </div>
         )}
         isOptionDisabled={(option) => option.isDisabled}
-        styles={customStyles}
-      />
-
+        styles={{
+            ...customStyles,
+            menuPortal: (base) => ({ ...base, zIndex: 9999 }),
+        }}
+        menuPortalTarget={typeof document !== 'undefined' ? document.body : null}
+        />
       <label>Link</label>
-      <input
-        type="text"
+      <CopyableInput
         placeholder={placeholder}
         value={link.url}
         onChange={(e) => handleChange(index, "url", e.target.value)}
-        className={`${styles.textInput} ${link.error ? styles.errorInput : ""}`}
-      />
+        error={link.error}
+        />
       {link.error && <span className={styles.errorText}>{link.error}</span>}
     </div>
   );

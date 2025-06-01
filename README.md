@@ -1,92 +1,120 @@
-## 📎 Hiked.in | Link Sharing App
+````markdown
+# Link Sharing App
 
-A pixel-perfect, responsive, and interactive link sharing application built using **Next.js (Pages Router)**, **JSX**, and **CSS Modules**.
-This app mimics the UI from the provided Figma and includes CRUD functionality, drag-and-drop sorting, form validation, and mobile preview features.
+A sleek and dynamic **link-sharing application** built using **Next.js (Pages Router)**, `react-dnd`, and `react-select`. Users can add, reorder, and customize links for different platforms (like LinkedIn, GitHub, etc.) and save them locally. 
 
----
+## ✨ Features
 
-### 🚀 Live Demo
-
-👉 [Live Demo Link](https://your-app-url.netlify.app)
-👉 [Video Walkthrough](https://your-video-link.com)
-
----
-
-### 📂 Folder Structure
-
-```
-hiked-link-sharing-app/
-├── public/                 # Static assets (icons, images)
-├── pages/
-│   ├── index.js            # Mobile preview screen
-│   ├── dashboard.js        # Dashboard for managing links
-│   └── api/links.js        # (Bonus) API for storing link data
-├── components/
-│   ├── Header.jsx
-│   ├── LinkForm.jsx
-│   ├── LinkCard.jsx
-│   └── PreviewPhone.jsx
-├── styles/
-│   ├── globals.css
-│   ├── Header.module.css
-│   ├── LinkForm.module.css
-│   └── LinkCard.module.css
-├── utils/
-│   └── validators.js
-└── README.md
-```
+- 📌 Add links for predefined platforms
+- ✅ Platform-specific URL validation
+- 🎨 Auto-generated placeholders
+- 🗑️ Remove links
+- 🔃 Drag-and-drop reordering (via `react-dnd`)
+- 💾 Save & persist data using `localStorage`
+- 🚫 Disables Add button when all platforms are added
+- ❌ Save button disables if no links exist
+- ✅ Visual error messages on invalid URLs
+- ✅ Dynamic icons & styling using platform config
 
 ---
 
-### 🛠️ Technologies Used
+## 🔧 Tech Stack
 
-* **Next.js (Pages Router)**
-* **JSX**
-* **CSS Modules**
-* **JavaScript (ES6)**
-* **React Beautiful DnD** – For drag and drop
-* **Axios** (optional, for full-stack)
-* **HTML5 & Semantic Elements**
-* **Responsive Design with Flexbox/Grid**
+- **Next.js (Pages Router)**
+- **React**
+- **CSS Modules**
+- **React DnD** (for drag-and-drop)
+- **React Select** (for custom dropdowns)
+- **LocalStorage** (for persistence)
 
 ---
 
-### ✅ Features
+## 📁 Folder Structure
 
-* ✅ Add, update, delete links
-* ✅ Form validation (empty field, incorrect URL pattern)
-* ✅ Drag and drop to reorder links
-* ✅ Real-time preview inside a mobile device frame
-* ✅ Fully responsive across screen sizes
-* ✅ Accessibility: Focus rings, semantic HTML, ARIA support
-* ✅ Hover and focus states for interactive elements
+```plaintext
+.
+├── public/
+│   └── images/
+│       └── All svg icons
+├── src/
+    ├── components/
+    │   ├── CopyableInput.jsx
+    │   ├── CustomizeForm.jsx
+    │   ├── Header.jsx
+    │   ├── LinkCard.jsx
+    │   ├── LinkItem.jsx
+    │   ├── ParentContainer.jsx
+    │   └── PhonePreview.jsx
+    │
+    ├── pages/
+    │   ├── _app.js
+    │   ├── _document.js
+    │   ├── index.js
+    │   └── profile.js
+    │
+    ├── styles/
+    │   ├── CustomizeForm.module.css
+    │   ├── globals.css
+    │   ├── Header.module.css
+    │   ├── ParentContainer.module.css
+    │   └── PhonePreview.module.css
+    │
+    └── utils/
+        └── config.js
+
+````
 
 ---
 
-### 🔒 Bonus Features
+## 🚀 Getting Started
 
-* ✅ Backend API for persisting links (`pages/api/links.js`)
-* ✅ User authentication (optional - using `next-auth`)
-* ✅ Extra screens and modal transitions
-
----
-
-### 📦 Installation & Run Locally
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/Abhishek07788/Link-Sharing-App.git
 cd link-sharing-app
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
+# or
+yarn
+```
+
+### 3. Start the development server
+
+```bash
 npm run dev
 ```
 
-Visit `http://localhost:3000` to open the app.
+Visit `http://localhost:3000` in your browser.
 
 ---
 
-### 🧠 Assumptions & Decisions
+## 🧠 How It Works
 
-* URL patterns are strictly validated for common platforms like GitHub, LinkedIn, YouTube, etc.
-* Drag and drop is implemented using `react-beautiful-dnd` for better UX and performance.
-* CSS Modules are used to scope styles component-wise.
-* Data persistence is added as a bonus using API routes and local state.
+* Users can **add a new link** using the `+ Add new link` button.
+* Each link includes:
+
+  * A **platform dropdown** (`react-select`)
+  * A **platform-specific placeholder**
+  * **URL validation** using regex per platform
+* **Drag-and-drop** support via `react-dnd`
+* **Save** stores links to `localStorage`
+* Only **unique platforms** are allowed
+
+---
+
+## 🖼️ Screenshot
+
+![Link Sharing App Screenshot](public/images/illustration-empty.svg)
+
+---
+
+## 👨‍💻 Author
+
+* **Abhishek** – [Portfolio](https://abhishek07788.github.io/) | [GitHub](https://github.com/Abhishek07788) | [LinkedIn](http://www.linkedin.com/in/abhishekpratapsolanki)
+
+```
