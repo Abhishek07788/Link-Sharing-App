@@ -1,19 +1,35 @@
-import React from "react";
+import Register from "@/components/auth/Register";
+import { AuthContext } from "@/context/authProvider";
+import React, { useContext } from "react";
+import styles from "@/styles/Profile.module.css";
 
-function links() {
+function Profile() {
+  const { user, handleLogOut } = useContext(AuthContext);
+
+  if (!user || !user.username) {
+    return (
+      <div className={styles.container}>
+        <Register />
+      </div>
+    );
+  }
+
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "90vh",
-        width: "100%",
-      }}
-    >
-      <h2>No Profile!</h2>
+    <div className={styles.container}>
+      <div className={styles.profileCard}>
+        <div className={styles.avatarSection}>
+          <div className={styles.avatar}>
+            {user.name?.[0].toUpperCase()}
+          </div>
+          <div className={styles.displayName}>{user.name}</div>
+          <div className={styles.username}>@{user.username}</div>
+          <button className={styles.logoutButton} onClick={handleLogOut}>
+            Logout
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
 
-export default links;
+export default Profile;

@@ -1,11 +1,16 @@
 import Header from "@/components/Header";
+import AuthProvider from "@/context/authProvider";
 import "@/styles/globals.css";
 
 export default function App({ Component, pageProps }) {
+
+  
   return (
     <div className="app-container">
-      <Header />
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Header />
+        <Component {...pageProps} />
+      </AuthProvider>
     </div>
   );
 }
