@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import LinkItem from "./LinkItem";
-import styles from "../styles/CustomizeForm.module.css";
+import styles from "@/styles/CustomizeForm.module.css";
 import { PLATFORMS } from "@/utils/config";
 
 export default function CustomizeForm({ storedLinks, setStoredLinks }) {

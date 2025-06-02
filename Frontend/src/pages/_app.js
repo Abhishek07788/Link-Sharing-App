@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/links/Header";
 import AuthProvider from "@/context/authProvider";
 import "@/styles/globals.css";
 

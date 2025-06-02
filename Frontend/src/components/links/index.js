@@ -1,4 +1,4 @@
-import styles from '../styles/ParentContainer.module.css';
+import styles from '@/styles/ParentContainer.module.css';
 import PhonePreview from './PhonePreview';
 import CustomizeForm from './CustomizeForm';
 import { useEffect, useState, useCallback } from 'react';

@@ -1,7 +1,7 @@
 import { useDrag, useDrop } from "react-dnd";
 import Select from "react-select";
 import Image from "next/image";
-import styles from "../styles/CustomizeForm.module.css";
+import styles from "@/styles/CustomizeForm.module.css";
 import { useRef } from "react";
 import { PLATFORMS } from "@/utils/config";
 import { CopyableInput } from "./CopyableInput";

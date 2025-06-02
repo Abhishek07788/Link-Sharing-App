@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
-import style from "@/styles/style.module.css";
+import style from "@/styles/Register.module.css";
 import { AuthContext } from "@/context/authProvider";
-import { registerApiCall } from "@/api/userApis";
+import { registerApi } from "@/api/userApis";
 
 const initialState = {
   name: "",
@@ -44,7 +44,7 @@ const Register = () => {
     if (!validateForm()) return;
 
     setLoading(true);
-    registerApiCall(form)
+    registerApi(form)
       .then((res) => {
         if (res.data.status) {
           handleLogin(res.data.token);

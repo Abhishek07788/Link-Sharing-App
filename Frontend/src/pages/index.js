@@ -1,6 +1,6 @@
 import React from 'react';
 import Head from 'next/head';
-import ParentContainer from '@/components/ParentContainer';
+import ParentContainer from '@/components/links';
 
 export default function Home() {
 
