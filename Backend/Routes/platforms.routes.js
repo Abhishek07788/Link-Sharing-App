@@ -2,55 +2,63 @@ const express = require("express");
 const Platforms = require("../Schema/platforms.schema");
 const app = express.Router();
 
-//------------- post platform ---------
+
+//------------- bulk post platforms ---------
 app.post("/", async (req, res) => {
-  const { platform, url, user, order } = req.body;
+  const { platforms, user } = req.body;
+
   try {
-    const existingPlatform = await Platforms.findOne({platform, user});
-    if (existingPlatform) {
-      return res.status(400).send({ message: "Platform already exists for this user!" });
+    if (!Array.isArray(platforms) || platforms.length > 4) {
+      return res.status(400).send({status: false, message: "Invalid request. Maximum 4 platforms allowed."});
     }
-    const newPlatform = await Platforms.create({platform, url, user, order});
-    return res.status(201).send({
-      message: "Platform added successfully",
-      platform: newPlatform,
+    const existingPlatforms = await Platforms.find({ user });
+
+    if (existingPlatforms.length + platforms.length > 4) {
+      return res.status(400).send({status: false, message: `Cannot exceed 4 platforms.`});
+    }
+
+    // Process each platform
+    const results = await Promise.all(platforms.map(async platform => {
+      if (platform._id) {
+        return Platforms.findByIdAndUpdate(
+          platform._id,
+          { 
+            platform: platform.platform,
+            url: platform.url,
+            order: platform.order
+          },
+          { new: true }
+        );
+      } else {
+        return Platforms.create({...platform, user});
+      }
+    }));
+
+    // Return updated list
+    const updatedPlatforms = results.filter(Boolean);
+
+    return res.status(200).send({
+      status: true,
+      message: "Platforms updated successfully",
+      platforms: updatedPlatforms
     });
+
   } catch (e) {
-    res.status(500).send(e.message);
+    console.error("Platform operation error:", e);
+    return res.status(500).send({
+      status: false,
+      message: "Error processing platforms",
+      error: e.message
+    });
   }
 });
 
-//--------- get platforms --------
+// Update GET route to sort by order
 app.get("/", async (req, res) => {
   const { user } = req.query;
   try {
-    const platforms = await Platforms.find({ user }).sort({ createdAt: -1 })
-      .populate("user", "name email");
+    const platforms = await Platforms.find({ user }).sort({ order: 1 });
     res.status(200).send(platforms);
-  } catch (e) {
-    res.status(500).send(e.message);
-  }
-});
-
-//--------- update platform --------
-app.patch("/:id", async (req, res) => {
-  const { id } = req.params;
-  const { url, platform, order } = req.body;
-  try {
-    const updatedPlatform = await Platforms.findByIdAndUpdate(
-      id,
-      { $set: { url, platform, order } },
-      { new: true }
-    );
-
-    if (!updatedPlatform) {
-      return res.status(404).send({ message: "Platform not found" });
-    }
-
-    res.status(200).send({
-      message: "Platform updated successfully",
-      platform: updatedPlatform,
-    });
   } catch (e) {
     res.status(500).send(e.message);
   }
@@ -61,7 +69,6 @@ app.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const deletedPlatform = await Platforms.findByIdAndDelete(id);
-
     if (!deletedPlatform) {
       return res.status(404).send({ message: "Platform not found" });
     }

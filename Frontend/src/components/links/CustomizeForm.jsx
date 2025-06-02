@@ -5,7 +5,7 @@ import LinkItem from "./LinkItem";
 import styles from "@/styles/CustomizeForm.module.css";
 import { PLATFORMS } from "@/utils/config";
 
-export default function CustomizeForm({ storedLinks, setStoredLinks }) {
+export default function CustomizeForm({ storedLinks, setStoredLinks, savePlatforms, deletePlatform, serverError }) {
   const [links, setLinks] = useState([]);
   const [message, setMessage] = useState("");
   const linksContainerRef = useRef(null);
@@ -56,18 +56,6 @@ export default function CustomizeForm({ storedLinks, setStoredLinks }) {
     setHasChanges(true);
   };
 
-  // Move link within the list
-  const moveLink = useCallback(
-    (fromIndex, toIndex) => {
-      const updated = [...links];
-      const [moved] = updated.splice(fromIndex, 1);
-      updated.splice(toIndex, 0, moved);
-      setLinks(updated);
-      setStoredLinks(updated);
-    },
-    [links]
-  );
-
   // Handle adding a new link
   const handleAddLink = () => {
     const availablePlatforms = PLATFORMS.filter(
@@ -76,16 +64,54 @@ export default function CustomizeForm({ storedLinks, setStoredLinks }) {
     if (availablePlatforms.length > 0) {
       setLinks((prevLinks) => [
         ...prevLinks,
-        { platform: "", url: "", error: "" },
+        { 
+          platform: "", 
+          url: "", 
+          error: "", 
+          order: prevLinks.length + 1
+        },
       ]);
     }
   };
 
+  // Move link within the list
+  const moveLink = useCallback(
+    (fromIndex, toIndex) => {
+      const updated = [...links];
+      const [moved] = updated.splice(fromIndex, 1);
+      updated.splice(toIndex, 0, moved);
+      
+      const reorderedLinks = updated.map((link, index) => ({
+        ...link,
+        order: index + 1,
+        _id: link._id || undefined 
+      }));
+      
+      setLinks(reorderedLinks);
+      setStoredLinks(reorderedLinks);
+      setTimeout(() => {
+        savePlatforms(reorderedLinks);
+      }, 3000)
+    },
+    [links]
+  );
+
   // Handle removing a link
   const handleRemove = (index) => {
-    const updatedLinks = links.filter((_, i) => i !== index);
+    const linkToRemove = links[index];
+    const updatedLinks = links
+      .filter((_, i) => i !== index)
+      .map((link, newIndex) => ({
+        ...link,
+        order: newIndex + 1,
+        _id: link._id || undefined
+      }));
+
     setLinks(updatedLinks);
     setStoredLinks(updatedLinks);
+    if (linkToRemove._id) {
+      deletePlatform(linkToRemove._id);
+    }
   };
 
   // Handle saving links
@@ -100,20 +126,27 @@ export default function CustomizeForm({ storedLinks, setStoredLinks }) {
         isValidAll = false;
         return {
           ...link,
+          _id: link._id || undefined,
           error: `Enter a valid ${selectedPlatform?.label ?? ""} URL.`,
         };
       }
-      return { ...link, error: "" };
+      return { 
+        ...link, 
+        _id: link._id || undefined,
+        error: "" 
+      };
     });
+    
     setLinks(updatedLinks);
 
     if (isValidAll) {
       setStoredLinks(updatedLinks);
+      savePlatforms(updatedLinks);
       setMessage("Links saved successfully!");
     } else {
       setMessage("Please correct the errors before saving.");
     }
-    setTimeout(() => setMessage(""), 3000);
+    setTimeout(() => setMessage(""), 2000);
   };
 
   return (
@@ -122,15 +155,9 @@ export default function CustomizeForm({ storedLinks, setStoredLinks }) {
         <div className={styles.Container}>
           <div className={styles.Heading}>
             Customize your links{" "}
-            {message && (
-              <span
-                className={`${styles.message} ${
-                  message.includes("successfully")
-                    ? styles["message-success"]
-                    : styles["message-error"]
-                }`}
-              >
-                {message}
+            {(message || serverError) && (
+              <span className={`${styles.message} ${message.includes("successfully") ? styles["message-success"] : styles["message-error"]}`}>
+                {message || `Server: ${serverError}`}
               </span>
             )}
           </div>
