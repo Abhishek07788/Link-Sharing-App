@@ -1,20 +1,20 @@
 const express = require("express");
 const Platforms = require("../Schema/platforms.schema");
 const app = express.Router();
-
+const NUMBER_OF_PLATFORMS = 5;
 
 //------------- bulk post platforms ---------
 app.post("/", async (req, res) => {
   const { platforms, user } = req.body;
 
   try {
-    if (!Array.isArray(platforms) || platforms.length > 4) {
-      return res.status(400).send({status: false, message: "Invalid request. Maximum 4 platforms allowed."});
+    if (!Array.isArray(platforms) || platforms.length > NUMBER_OF_PLATFORMS) {
+      return res.status(400).send({status: false, message: `Maximum ${NUMBER_OF_PLATFORMS} platforms allowed.`});
     }
     const existingPlatforms = await Platforms.find({ user });
-
-    if (existingPlatforms.length + platforms.length > 4) {
-      return res.status(400).send({status: false, message: `Cannot exceed 4 platforms.`});
+    const newPlatforms = platforms.filter(p => !p._id);
+    if (existingPlatforms.length + newPlatforms.length > NUMBER_OF_PLATFORMS) {
+      return res.status(400).send({status: false, message: `Cannot exceed ${NUMBER_OF_PLATFORMS} platforms.`});
     }
 
     // Process each platform
@@ -34,7 +34,6 @@ app.post("/", async (req, res) => {
       }
     }));
 
-    // Return updated list
     const updatedPlatforms = results.filter(Boolean);
 
     return res.status(200).send({
