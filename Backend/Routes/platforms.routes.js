@@ -4,13 +4,13 @@ const app = express.Router();
 
 //------------- post platform ---------
 app.post("/", async (req, res) => {
-  const { platform, url, user } = req.body;
+  const { platform, url, user, order } = req.body;
   try {
     const existingPlatform = await Platforms.findOne({platform, user});
     if (existingPlatform) {
       return res.status(400).send({ message: "Platform already exists for this user!" });
     }
-    const newPlatform = await Platforms.create({platform, url, user,});
+    const newPlatform = await Platforms.create({platform, url, user, order});
     return res.status(201).send({
       message: "Platform added successfully",
       platform: newPlatform,
@@ -35,11 +35,11 @@ app.get("/", async (req, res) => {
 //--------- update platform --------
 app.patch("/:id", async (req, res) => {
   const { id } = req.params;
-  const { url, platform } = req.body;
+  const { url, platform, order } = req.body;
   try {
     const updatedPlatform = await Platforms.findByIdAndUpdate(
       id,
-      { $set: { url, platform } },
+      { $set: { url, platform, order } },
       { new: true }
     );
 

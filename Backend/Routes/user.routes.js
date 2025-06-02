@@ -41,24 +41,21 @@ app.post("/register", async (req, res) => {
         });
       }
     } else {
-      await User.create({
-        username: username,
+      const newUser = await User.create({
         name: name,
-        // password protect ------
+        username: username.toLowerCase().trim(), 
         password: CryptoJS.AES.encrypt(password, "%$#@!").toString(),
       });
 
-      // --- jwt ------
       const token = jwt.sign(
         {
-          id: "",
-          username: username,
-          name: name,
+          id: newUser._id, 
+          name: newUser.name,
+          username: newUser.username,
         },
         "%$#@!",
         { expiresIn: "30 days" }
       );
-
       return res.status(200).send({
         token: token,
         status: true,
