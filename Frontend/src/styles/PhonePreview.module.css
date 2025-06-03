@@ -1,28 +1,40 @@
+.mockup {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background: #fff
+}
+
 .phoneContainer {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #fff;
-  padding: 24px;
-  width: 50%;
-}
-
-.mockup {
-  object-fit: contain;
-  z-index: 1;
+  background: url("/images/illustration-phone-mockup.svg") no-repeat center;
+  background-size: contain;
+  height: 632px;
+  width: 100%;
 }
 
 .linksOverlay {
   position: absolute;
-  top: 44.6%;
-  left: 49.9%;
+  top: 10.6%;
+  left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  gap: 17.2px;
-  width: 240px;
+  gap: 44px;
   z-index: 2;
+  width: 238px;
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 18.6px;
 }
 
 .linkButton {
@@ -30,17 +42,17 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 8px;
-  padding: 12px 20px;
+  padding: 11px 16px;
   text-decoration: none;
   color: white;
-  font-weight: 600;
+  font-weight: 400;
   font-size: 15px;
 }
 
 .left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 /* Force icons to appear white even if SVG is black */
@@ -48,24 +60,29 @@
   filter: brightness(0) invert(1);
 }
 
+.arrowIcon {
+  cursor: pointer;
+}
+
 @media (min-width: 768px) and (max-width: 1024px) {
   .phoneContainer {
+    background: url("/images/illustration-phone-mockup.svg") no-repeat center;
+  }
+
+  .mockup {
     width: 100%;
-    background: #fff;
-    margin: auto;
-    padding: 24px 0px;
+    padding: 20px;
+
   }
 }
 
 @media (max-width: 1024px) {
   .phoneContainer {
-    width: 100%;
-    background: #fff;
-    margin: auto;
-    padding: 24px 0px;
+    background: url("/images/illustration-phone-mockup.svg") no-repeat center;
   }
-}
 
-.arrowIcon {
-  cursor: pointer;
+  .mockup {
+    width: 100%;
+    padding: 5px;
+  }
 }

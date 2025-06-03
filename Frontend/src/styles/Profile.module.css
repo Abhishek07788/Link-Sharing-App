@@ -50,12 +50,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   background-color: #633CFF;
   color: white;
@@ -67,12 +66,28 @@
 }
 
 .displayName {
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #111827;
+  margin-top: 26px;
+  background: #ffffff;
+  width: 200px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 16px;
 }
 
 .username {
-  font-size: 1rem;
+  font-size: 0.8rem;
+  margin: 8px 0;
+  background: #ffffff;
+  text-align: center;
+  width: 200px;
   color: #6b7280;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 16px;
 }

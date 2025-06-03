@@ -30,17 +30,7 @@ export default function CustomizeForm({ storedLinks, setStoredLinks, savePlatfor
     }
   }, [storedLinks]);
 
-  // Scroll to bottom when links length changes
-  useEffect(() => {
-    if (linksContainerRef.current) {
-      linksContainerRef.current.scrollTo({
-        top: linksContainerRef.current.scrollHeight,
-        behavior: "smooth",
-      });
-    }
-  }, [links.length]);
-
-  // Handle changes to links
+  // Handle changes to links (remove scroll from here)
   const handleChange = (index, field, value) => {
     const updatedLinks = links.map((link, i) => {
       if (i === index) {
@@ -71,6 +61,15 @@ export default function CustomizeForm({ storedLinks, setStoredLinks, savePlatfor
           order: prevLinks.length + 1
         },
       ]);
+      // Scroll to bottom after adding new link
+      setTimeout(() => {
+        if (linksContainerRef.current) {
+          linksContainerRef.current.scrollTo({
+            top: linksContainerRef.current.scrollHeight,
+            behavior: "smooth",
+          });
+        }
+      }, 100);
     }
   };
 

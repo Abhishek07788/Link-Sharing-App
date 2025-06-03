@@ -1,24 +1,23 @@
 import Image from "next/image";
 import styles from "@/styles/PhonePreview.module.css";
 import { PLATFORMS } from "@/utils/config";
+import { useContext } from "react";
+import { AuthContext } from "@/context/authProvider";
+import { ProfileView } from "@/pages/profile";
 
 export default function PhonePreview({ storedLinks = [] }) {
+  const { user } = useContext(AuthContext);
 
   const getPlatformData = (platformValue) => {
     return PLATFORMS.find((p) => p.value === platformValue);
   };
 
   return (
+    <div className={styles.mockup}>
     <div className={styles.phoneContainer}>
-      <Image
-        src="/images/illustration-phone-mockup.svg"
-        alt="Phone Mockup"
-        width={320}
-        height={640}
-        className={styles.mockup}
-      />
-
       <div className={styles.linksOverlay}>
+      <ProfileView user={user} />{/*  Image and name and username */}
+      <div className={styles.linksContainer}>
         {storedLinks.map((link) => {
           const platform = getPlatformData(link.platform);
           if (!platform) return null;
@@ -54,7 +53,9 @@ export default function PhonePreview({ storedLinks = [] }) {
             </div>
           );
         })}
+        </div>
       </div>
+    </div>
     </div>
   );
 }
