@@ -9,14 +9,51 @@
 
 .form {
   background: white;
-  padding: 32px;
   border-radius: 16px;
   box-shadow: 0 1px 2px rgba(99, 60, 255, 0.299);
   display: flex;
   flex-direction: column;
   gap: 16px;
   width: 100%;
-  max-width: 400px;
+  width: 320px;
+  padding: 1px 0;
+}
+
+.inputContainer {
+  padding: 20px 32px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.tabs {
+  display: flex;
+  gap: 1px;
+  background: #EEEEEE;
+  width: 100%;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.tab {
+  flex: 1;
+  padding: 4px 16px;
+  border: none;
+  background: none;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: white;
+  border-bottom: 1px solid rgb(186, 183, 183);
+}
+
+.tab.active {
+  color: #633CFF;
+  border-bottom: 1px solid #633CFF;
+}
+
+.tab:hover:not(.active) {
+  background: rgba(99, 60, 255, 0.1);
 }
 
 .input {
