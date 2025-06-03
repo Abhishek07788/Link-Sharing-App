@@ -78,7 +78,7 @@ A full-stack **link-sharing application** built using **Next.js**, **Node.js**, 
 
 ### 1. Clone the repository
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/Abhishek07788/Link-Sharing-App
 ```
 
 ### 2. Install dependencies
@@ -95,11 +95,12 @@ npm install
 ### 3. Set up environment variables
 ```bash
 # Frontend (.env.local)
-NEXT_PUBLIC_API_ENDPOINT=http://localhost:8080/api
+NEXT_PUBLIC_API_ENDPOINT=http://localhost:8080
 
 # Backend (.env)
-MONGODB_URI=your_mongodb_uri
-JWT_SECRET=your_jwt_secret
+PORT= 8080
+MONGODB_URI= mongodb_uri
+JWT_SECRET= jwt_secret
 ```
 
 ### 4. Start the servers
@@ -113,7 +114,7 @@ cd Frontend
 npm run dev
 ```
 
-Then open [http://localhost:3000](http://localhost:3000) in your browser.
+Then open [http://localhost:3000](http://localhost:3000) in browser.
 
 ---
 
