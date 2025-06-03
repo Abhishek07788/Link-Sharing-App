@@ -18,8 +18,8 @@ const Register = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (form.name.trim().length < 6 || form.name.trim().length > 12) {
-      newErrors.name = "Name must be between 6 and 12 characters.";
+    if (form.name.trim().length < 6 || form.name.trim().length > 20) {
+      newErrors.name = "Name must be between 6 and 20 characters.";
     }
 
     if (form.username.trim().length < 6 || form.username.trim().length > 12) {

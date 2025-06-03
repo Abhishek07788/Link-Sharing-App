@@ -1,94 +1,72 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const User = require("../Schema/user.schema");
-const CryptoJS = require("crypto-js");
 const app = express.Router();
 
+const JWT_SECRET = "%$#@!";
+const SALT_ROUNDS = 10;
 
-// ------------ (Sign Up) --------------
+// ------------ (Sign Up / Login) --------------
 app.post("/register", async (req, res) => {
   const { name, username, password } = req.body;
   try {
-    const oldUser = await User.findOne({ username });
+    const oldUser = await User.findOne({ username: username.toLowerCase().trim() });
 
     if (oldUser) {
-      //decrypt password using cryptoJS -----------------
-      const decryptPass = CryptoJS.AES.decrypt(oldUser.password, "%$#@!");
-      const loginPassword = decryptPass.toString(CryptoJS.enc.Utf8);
-
-      if (password === loginPassword) {
-        // --- jwt ------
+      const isMatch = await bcrypt.compare(password, oldUser.password);
+      if (isMatch) {
         const token = jwt.sign(
           {
             id: oldUser._id,
             username: oldUser.username,
             name: oldUser.name,
           },
-          "%$#@!",
-          { expiresIn: "30 days" }
+          JWT_SECRET,
+          { expiresIn: "30d" }
         );
 
-        return res.status(200).send({
-          token: token,
-          status: true,
-          message: "Register Successfully!",
-        });
+        return res.status(200).send({token, status: true, message: "Login Successful!"});
       } else {
-        return res.status(200).send({
-          token: null,
-          status: false,
-          message: "Wrong Password!!",
-        });
+        return res.status(200).send({token: null, status: false, message: "Wrong Password!"});
       }
     } else {
+      const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
       const newUser = await User.create({
-        name: name,
-        username: username.toLowerCase().trim(), 
-        password: CryptoJS.AES.encrypt(password, "%$#@!").toString(),
+        name,
+        username: username.toLowerCase().trim(),
+        password: hashedPassword,
       });
 
       const token = jwt.sign(
         {
-          id: newUser._id, 
+          id: newUser._id,
           name: newUser.name,
           username: newUser.username,
         },
-        "%$#@!",
-        { expiresIn: "30 days" }
+        JWT_SECRET,
+        { expiresIn: "30d" }
       );
-      return res.status(200).send({
-        token: token,
-        status: true,
-        message: "New Register Successfully!",
-      });
+
+      return res.status(200).send({token, status: true, message: "Registered Successfully!"});
     }
   } catch (e) {
-    res.status(404).send(e);
+    res.status(500).send({status: false, message: "Something went wrong", error: e.message});
   }
 });
 
-//--------- get by user name --------
+//--------- Get user by username --------
 app.get("/:username", async (req, res) => {
   const { username } = req.params;
   try {
-    const user = await User.findOne({ username }).select("-password -__v") .lean(); 
-    if (!user) {
-      return res.status(404).send({
-        status: false,
-        message: "User not found"
-      });
-    }
+    const user = await User.findOne({ username }).select("-password -__v").lean();
 
-    res.status(200).send({
-      status: true,
-      user: user
-    });
+    if (!user) {
+      return res.status(404).send({status: false, message: "User not found"});
+    }
+    res.status(200).send({status: true, user, message: "User fetched successfully"});
   } catch (e) {
-    res.status(500).send({
-      status: false,
-      message: "Server error",
-      error: e.message
-    });
+    res.status(500).send({status: false, message: "Server error", error: e.message,});
   }
 });
 
