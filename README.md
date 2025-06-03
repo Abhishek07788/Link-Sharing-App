@@ -1,67 +1,75 @@
 # Link Sharing App
 
-A sleek and dynamic **link-sharing application** built using **Next.js (Pages Router)**, `react-dnd`, and `react-select`. Users can add, reorder, and customize links for different platforms (like LinkedIn, GitHub, etc.) and save them locally. 
+A full-stack **link-sharing application** built using **Next.js**, **Node.js**, and **MongoDB**. Users can register, login, and manage their platform links with drag-and-drop functionality.
 
 ---
 
 ## ✨ Features
 
+- 🔐 User Authentication (Register/Login)
 - 📌 Add links for predefined platforms
 - ✅ Platform-specific URL validation
 - 🎨 Auto-generated placeholders
 - 🗑️ Remove links
-- 🔃 Drag-and-drop reordering (via `react-dnd`)
-- 💾 Save & persist data using `localStorage`
-- 🚫 Add button disables when all platforms are used
-- ❌ Save button disables if no links exist
-- ⚠️ Visual error messages for invalid URLs
-- 🎯 Dynamic icons & styling via a config object
+- 🔃 Drag-and-drop reordering
+- 💾 Persistent data storage with MongoDB
+- 🚫 Maximum 4 platforms per user
+- ⚠️ Visual error messages
+- 🎯 Dynamic icons & styling
+- 🔄 Real-time updates
 
 ---
 
 ## 🔧 Tech Stack
 
+### Frontend
 - **Next.js (Pages Router)**
 - **React**
 - **CSS Modules**
 - **React DnD**
-- **React Select**
-- **LocalStorage**
+- **Axios**
+
+### Backend
+- **Node.js**
+- **Express**
+- **MongoDB**
+- **JWT Authentication**
+- **Bcrypt**
 
 ---
 
-## 📁 Folder Structure
+## 📁 Project Structure
 
 ```plaintext
 .
-├── public/
-│   └── images/
-│       └── All SVG icons
-├── src/
-│   ├── components/
-│   │   ├── CopyableInput.jsx
-│   │   ├── CustomizeForm.jsx
-│   │   ├── Header.jsx
-│   │   ├── LinkCard.jsx
-│   │   ├── LinkItem.jsx
-│   │   ├── ParentContainer.jsx
-│   │   └── PhonePreview.jsx
-│   │
-│   ├── pages/
-│   │   ├── _app.js
-│   │   ├── _document.js
-│   │   ├── index.js
-│   │   └── profile.js
-│   │
-│   ├── styles/
-│   │   ├── CustomizeForm.module.css
-│   │   ├── globals.css
-│   │   ├── Header.module.css
-│   │   ├── ParentContainer.module.css
-│   │   └── PhonePreview.module.css
-│   │
-│   └── utils/
-│       └── config.js
+├── Frontend/
+│   ├── public/
+│   │   └── images/
+│   └── src/
+│       ├── api/
+│       │   ├── platformApis.js
+│       │   └── userApis.js
+│       ├── components/
+│       │   ├── auth/
+│       │   │   └── Register.jsx
+│       │   └── links/
+│       │       ├── CustomizeForm.jsx
+│       │       ├── PhonePreview.jsx
+│       │       └── index.js
+│       ├── context/
+│       │   └── authProvider.js
+│       └── styles/
+│           ├── Register.module.css
+│           └── ... other styles
+│
+├── Backend/
+│   ├── Routes/
+│   │   ├── platforms.routes.js
+│   │   └── user.routes.js
+│   ├── Schema/
+│   │   ├── platforms.schema.js
+│   │   └── user.schema.js
+│   └── index.js
 ```
 
 ---
@@ -69,23 +77,39 @@ A sleek and dynamic **link-sharing application** built using **Next.js (Pages Ro
 ## 🚀 Getting Started
 
 ### 1. Clone the repository
-
 ```bash
-git clone https://github.com/Abhishek07788/Link-Sharing-App.git
-cd Link-Sharing-App
+git clone <your-repo-url>
 ```
 
 ### 2. Install dependencies
-
 ```bash
+# Install frontend dependencies
+cd Frontend
 npm install
-# or
-yarn
+
+# Install backend dependencies
+cd ../Backend
+npm install
 ```
 
-### 3. Start the development server
-
+### 3. Set up environment variables
 ```bash
+# Frontend (.env.local)
+NEXT_PUBLIC_API_ENDPOINT=http://localhost:8080/api
+
+# Backend (.env)
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+```
+
+### 4. Start the servers
+```bash
+# Start backend server
+cd Backend
+npm start
+
+# Start frontend development server
+cd Frontend
 npm run dev
 ```
 
@@ -93,26 +117,24 @@ Then open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## 🧠 How It Works
+## 🎯 Core Functionality
 
-- Users can **add a new link** using the `+ Add new link` button
-- Each link includes:
-  - A **platform dropdown** (`react-select`)
-  - A **platform-specific placeholder**
-  - **Validation** using regex per platform
-- **Drag-and-drop** support using `react-dnd`
-- **Save** writes links to `localStorage`
-- Each platform can be added **only once**
+- **Authentication**
+  - Register new users
+  - Login existing users
+  - JWT-based auth
+  - Password encryption
 
----
+- **Platform Management**
+  - Add up to 4 platforms
+  - Drag-and-drop reordering
+  - Platform-specific validation
+  - Real-time updates
 
-## 🖼️ Screenshots
-
-> You should host these screenshots using GitHub Issues or another image host and replace the links below with raw URLs.
-
-<img width="1469" alt="Screenshot 1" src="https://github.com/user-attachments/assets/dd89d026-6031-42f3-936b-562fcc0f960f" />
-<br />
-<img width="1470" alt="Screenshot 2" src="https://github.com/user-attachments/assets/579e81ff-55e3-4b8d-b6b3-2583bac20b9e" />
+- **Data Persistence**
+  - MongoDB integration
+  - User-specific data
+  - Secure API endpoints
 
 ---
 
