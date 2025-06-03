@@ -69,7 +69,7 @@ export default function ParentContainer() {
       setLoading(true);
       const response = await deletePlateFormAPI(id);
       if(response?.success){
-        setError(null);
+        setError(true);
       } else {
         setError(response.error);
         resetError(true);
@@ -88,7 +88,7 @@ export default function ParentContainer() {
       if (fetchData) {
         fetchPlateForms();
       }
-    }, 6000);
+    }, 3000);
   };
 
   return (
