@@ -3,7 +3,11 @@ import PhonePreview from "./PhonePreview";
 import CustomizeForm from "./CustomizeForm";
 import { useEffect, useState, useContext } from "react";
 import { AuthContext } from "@/context/authProvider";
-import { addNewPlateFormAPI, deletePlateFormAPI, getAllPlateFormAPI } from "@/api/plateformApis";
+import {
+  addNewPlateFormAPI,
+  deletePlateFormAPI,
+  getAllPlateFormAPI,
+} from "@/api/plateformApis";
 
 export default function ParentContainer() {
   const [storedLinks, setStoredLinks] = useState([]);
@@ -20,25 +24,28 @@ export default function ParentContainer() {
     try {
       setLoading(true);
       const response = await getAllPlateFormAPI(user.userId);
-      if(response?.success){
-        if (response.data && Array.isArray(response.data)) {
-          setStoredLinks(response.data);
+      if (response.status === 200) {
+        if (response?.data && Array.isArray(response?.data)) {
+          setStoredLinks(response?.data);
           setError(null);
         }
-      }else {
-        setError(response.error);
+      } else {
+        setError(response?.message ?? "Server Error");
         resetError();
       }
+    } catch (error) {
+      setError(error?.message ?? "Server Error");
+      resetError();
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   // Save platforms to API
-  const savePlatforms = async (links = storedLinks ) => {
+  const savePlatforms = async (links = storedLinks) => {
     if (!user?.userId || links.length === 0) return;
     try {
-      setLoading(true)
+      setLoading(true);
       const payload = {
         user: user.userId,
         platforms: links.map((link) => ({
@@ -49,14 +56,16 @@ export default function ParentContainer() {
         })),
       };
       const response = await addNewPlateFormAPI(payload);
-       if(!response?.success){
-         setError(response.error);
-         resetError(true);
-       }else {
+      if (response?.status === 200) {
+        setStoredLinks(response?.data?.platforms || []);
         setError(null);
-       }
+      } else {
+        setError(response?.data?.message ?? "Server Error");
+        resetError();
+        fetchPlateForms();
+      }
     } catch (error) {
-      setError(error.message);
+      setError(error?.message ?? "Server Error");
       resetError();
     } finally {
       setLoading(false);
@@ -68,37 +77,37 @@ export default function ParentContainer() {
     try {
       setLoading(true);
       const response = await deletePlateFormAPI(id);
-      if(response?.success){
-        setError(true);
-      } else {
-        setError(response.error);
+      if (response?.status === 200) {
         resetError(true);
+        fetchPlateForms();
+      } else {
+        setError(response?.data?.message ?? "Server Error");
+        fetchPlateForms();
       }
     } catch (error) {
-      setError(error.message);
+      setError(error?.message ?? "Server Error");
       resetError();
     } finally {
       setLoading(false);
     }
-  }
+  };
 
-  const resetError = (fetchData = false) => {
+  const resetError = () => {
     setTimeout(() => {
       setError(null);
-      if (fetchData) {
-        fetchPlateForms();
-      }
     }, 3000);
   };
 
   return (
     <div className={styles.container}>
-      {loading &&  <div className={styles.loadingOverlay}>
-      <div className={styles.loadingCard}>
-        <div className={styles.spinner} />
-        <div className={styles.loadingText}>Loading...</div>
-      </div>
-    </div>}
+      {loading && (
+        <div className={styles.loadingOverlay}>
+          <div className={styles.loadingCard}>
+            <div className={styles.spinner} />
+            <div className={styles.loadingText}>Loading...</div>
+          </div>
+        </div>
+      )}
       <PhonePreview storedLinks={storedLinks} />
       <CustomizeForm
         storedLinks={storedLinks}
